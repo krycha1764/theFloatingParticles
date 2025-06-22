@@ -22,6 +22,7 @@
 #define PARTICLES 10
 #define FRAMES (3600*1)
 #define TIMESTEP 0.01
+#define MICROSTEPS 10
 
 float randf(void);
 unsigned int randr(unsigned int range);
@@ -70,7 +71,9 @@ int main() {
 	printf("Starting generating %i frames:\n", FRAMES);
 	for(uint64_t i = 0; i < FRAMES; i++) {
 		//printf("Generating %i frame:\n", i);
-		update_particles(partTable, PARTICLES, coeffs, COLORS, TIMESTEP);
+		for(int j = 0; j < MICROSTEPS; j++) {
+			update_particles(partTable, PARTICLES, coeffs, COLORS, TIMESTEP / MICROSTEPS);
+		}
 
 		int remain = 0;
 		for(int j = 0; j < PARTICLES; j++) {
